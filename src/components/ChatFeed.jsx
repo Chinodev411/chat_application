@@ -18,8 +18,8 @@ const ChatFeed = (props) => {
                 backgroundImage: person.person.avatar && `url(${person.person.avatar})`,
             }}
         />
-     ))
-  }
+     ));
+  
 
 
   const renderMessages = () => {
@@ -36,39 +36,38 @@ const ChatFeed = (props) => {
 
             {isMyMessage
                 ? <MyMessage message={message} />
-                : <TheirMessage message={message} lastMessage={messages[lastMessageKey]} />}
+                  : <TheirMessage message={message} lastMessage={messages[lastMessageKey]} />}
+            </div>
+            <div className="read-receipts" style={{ marginRight: isMyMessage ? '18px' : '0px', marginLeft: isMyMessage ? '0px' : '68px' }}>
+                {renderReadReceipts(message, isMyMessage)}
+            </div>
           </div>
-          <div className="read-receipts" style={{ marginRight: isMyMessage ? '18px' : '0px', marginLeft: isMyMessage ? '0px' : '68px' }}>
-              {renderReadReceipts(message, isMyMessage)}
-          </div>
+        );
+      });
+    };
 
+  // renderMessages();
+
+    if (!chat) return <div />;
+
+    return (
+      <div className="chat-feed">
+        <div className="chat-title-container">
+          <div className="chat-title">{chat?.title}</div>
+          <div className="chat-subtitle">
+            {chat.people.map((person) => `${person.person.username}`)}
+          </div>
         </div>
-      );
-
-    });
-  };
-
-// renderMessages();
-
-if (!chat) return 'Loading...';
-
-return (
-  <div className="chat-feed">
-    <div className="chat-title-container">
-      <div className="chat-title">{chat?.title}</div>
-      <div className="chat-subtitle">
-        {chat.people.map((person) => `${person.person.username}`)}
-
+        {renderMessages()}
+        <div style={{ height: '100px' }} />
+        <div className="message-form-container">
+        <MessageForm {...props} chatId={activeChat} />
       </div>
     </div>
-    {renderMessages()}
-    <div style={{ height: '100px' }} />
-    <div className="message-form-container">
-      <MessageForm {...props} chatId={activeChat} />
-    </div>
-  </div>
- );
-};
+  );
+ };
+
+}
 
 
 
